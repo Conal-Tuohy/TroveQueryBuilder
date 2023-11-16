@@ -3,7 +3,9 @@
 const css=
 `
 /*
+	@import url('https://fonts.googleapis.com/css2?family=Sofia+Sans+Condensed:wght@400;700&family=Sofia+Sans+Extra+Condensed&display=swap');
 	div {
+      		font-family: "Sofia Sans Condensed", sans-serif;
 		border-style: solid;
 		border-width: 1px;
 		border-color: yellow;

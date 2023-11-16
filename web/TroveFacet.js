@@ -120,11 +120,29 @@ class FacetMonitor {
 					//console.log(term);
 					var optionElement = document.createElement('option');
 					optionElement.setAttribute('value', term.search);
-					optionElement.append(term.display);
+					var counts = Object
+						.getOwnPropertyNames(term.categoryCounts)
+						.map((categoryName) => `${term.categoryCounts[categoryName]} ${categoryName}`)
+						.join('; ');
+					optionElement.append(term.display + '	   (' + counts + ')');
 					facetElement.select_.append(optionElement);
 				}
 			}
 		}
+	}
+	
+	formatCount(count) {
+		// returns a short representation of what is often a huge number
+		if (count < 1000) {
+			return count
+		}
+		if (count < 1000000) {
+			return (count / 1000).toExponential(1).split('e')[0] + "k";
+		}
+		if (count < 1000000000) {
+			return (count / 1000000).toExponential(1).split('e')[0] + "M";
+		}
+		return (count / 1000000000).toExponential(1).split('e')[0] + "B";
 	}
 	
 	addFacetTerm(facets, facetName, termDisplay, termSearch, category, count) {
@@ -152,7 +170,7 @@ class FacetMonitor {
 			};
 			facets[facetName] = facet;
 		}
-		var term = facet.terms[termSearch];
+		var term = facet.terms.get(termSearch);
 		if (term === undefined) {
 			term = {
 				display: termDisplay,
@@ -161,7 +179,7 @@ class FacetMonitor {
 			}
 			facet.terms.set(termSearch, term);
 		}
-		term.categoryCounts[category] = count;
+		term.categoryCounts[category] = this.formatCount(count);
 	}
 	
 	requestFacets() {
@@ -241,7 +259,10 @@ class TroveFacet extends HTMLElement {
       this.attachShadow({mode: 'open', delegatesFocus: true});
       this.shadowRoot.innerHTML = `
       	<style>
-      		select {
+      		@import url('https://fonts.googleapis.com/css2?family=Sofia+Sans+Condensed:wght@400;700&family=Sofia+Sans+Extra+Condensed&display=swap');
+      		button, input, select {
+      			font-family: "Sofia Sans Condensed", sans-serif;
+      			font-weight: 300;
       			width: 100%;
 		}
       	</style>
