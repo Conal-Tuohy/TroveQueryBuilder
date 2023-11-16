@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<title>Trove Query Builder demo</title>
+		<!--<link rel="stylesheet" href="TroveQueryBuilder.css" />-->
+		<script src="TroveQuery.js"></script>
+		<script src="TroveFacet.js"></script>
+		<style>
+			body {
+				font-family: sans-serif
+			}
+			h1 {
+				text-align: center;
+			}
+			#trove-form {
+				display: grid;
+				grid-template-columns: 6em 1fr;
+				gap: 0.5em;
+			}
+			#trove-form label {
+				text-align: right;
+				font-size: 0.8em;
+			}
+		</style>
+	</head>
+	<body>
+		<!-- https://api.trove.nla.gov.au/v3/result -->
+		<h1>Query Trove</h1>
+		<form id="trove-form" name="trove" action="http://localhost:8080/proxy/v3/result" method="get" target="_blank">
+			<label for="key">API Key</label>
+			<input name="key" id="key" value="">
+			
+			<label for="proxy-format">Result data format</label>
+			<select name="proxy-format" id="proxy-format">
+				<option value="" selected="selected">Trove XML</option>
+				<option value="tei">Text Encoding for Interchange (TEI) XML</option>
+				<option value="atom">Atom Feed XML</option>
+				<option value="csv">Comma Separated Values (CSV) spreadsheet</option>
+			</select>
+			
+			<label for="n">Maximum number of results</label>
+			<input name="n" id="n" value="100" type="number" min="1" max="100">
+		
+			<label for="sortby">Sort by</label>
+			<select name="sortby" id="sortby">
+				<option value="relevance" selected="selected">Relevance</option>
+				<option value="datedesc">Date (descending)</option>
+				<option value="dateasc">Date (ascending)</option>
+			</select>
+			
+			<label for="bulkHarvest">Bulk harvest</label>
+			<input type="checkbox" id="bulkHarvest" name="bulkHarvest" value="true" />
+			
+			<label for="reclevel">Record level of detail</label>
+			<select name="reclevel" id="reclevel">
+				<option value="full">Full</option>
+				<option value="brief" selected="selected">Brief<option>
+			</select>
+			
+			<label for="include">Optional inclusions</label>
+			<select name="include" id="include" multiple="multiple">
+				<option value="all">all</option>
+				<option value="comments">Comments added by members of the public</option>
+				<option value="holdings">Institutional holdings of the items</option>
+				<option value="links">Links to online versions of the items</option>
+				<option value="listitems">Items belonging to lists</option>
+				<option value="lists">Names and identifiers of lists which items belong to</option>
+				<option value="subscribinglibs">Institutional subscriptions to the items</option>
+				<option value="tags">Tags added by members of the public</option>
+				<option value="workversions">All available versions of the items</option>
+			</select>
+			
+			<label for="proxy-include-people-australia">Include additional detail from People Australia</label>
+			<input type="checkbox" id="proxy-include-people-australia" name="proxy-include-people-australia" value="true" />
+			
+			<label for="category">Category</label>
+			<select name="category" id="category" multiple="multiple">
+				<option value="all" selected="selected">All</option>
+				<option value="book">Books &amp; Libraries</option>
+				<option value="diary">Diaries, Letters &amp; Archives</option>
+				<option value="image">Images, Maps &amp; Artefacts</option>
+				<option value="list">Lists</option>
+				<option value="magazine">Magazines &amp; Newsletters</option>
+				<option value="music">Music, Audio &amp; Video</option>
+				<option value="newspaper">Newspapers &amp; Gazettes</option>
+				<option value="people">People &amp; Organisations</option>
+				<option value="research">Research &amp; Reports</option>
+			</select>
+			
+			<label for="query">Query</label>
+			<trove-query name="q" id="query"></trove-query>
+			
+			<label for="artType">Type</label>
+			<trove-facet id="artType" name="l-artType"></trove-facet>
+			
+			<label for="geo">Place</label>
+			<trove-facet id="geo" name="l-geocoverage"></trove-facet>
+			
+			<label for="format">Format</label>
+			<trove-facet id="format" name="l-format"></trove-facet>
+			
+			<label for="geo">Audience</label>
+			<trove-facet id="audience" name="l-audience"></trove-facet>
+			
+			<label for="australian">Australian</label>
+			<trove-facet id="australian" name="l-australian"></trove-facet>
+			
+			<label for="birth">Year of birth or establishment</label>
+			<trove-facet id="birth" name="l-birth"></trove-facet>
+			
+			<label for="l-place">Place of birth or establishment</label>
+			<trove-facet id="l-place" name="l-place"></trove-facet>
+			
+			<label for="l-death">Year of death or dissolution</label>
+			<trove-facet id="l-death" name="l-death"></trove-facet>
+			
+			<label for="l-category">Newspaper or gazette article type</label>
+			<trove-facet id="l-category" name="l-category"></trove-facet>
+			
+			<label for="l-contribcollection">Collection</label>
+			<trove-facet id="l-contribcollection" name="l-contribcollection"></trove-facet>
+			
+			<label for="l-culturalSensitivity">Culturally sensitive</label>
+			<trove-facet id="l-culturalSensitivity" name="l-culturalSensitivity"></trove-facet>
+			
+			<label for="l-decade">Publication decade</label>
+			<trove-facet id="l-decade" name="l-decade"></trove-facet>
+
+			<label for="l-year">Publication year</label>
+			<trove-facet id="l-year" name="l-year"></trove-facet>
+			
+			<label for="l-month">Publication month</label>
+			<trove-facet id="l-month" name="l-month"></trove-facet>
+			
+			<label for="l-firstAustralians">First Australians</label>
+			<trove-facet id="l-firstAustralians" name="l-firstAustralians"></trove-facet>
+			
+			<label for="l-illustrated">Illustrated</label>
+			<trove-facet id="l-illustrated" name="l-illustrated"></trove-facet>
+			
+			<label for="l-illustrationType">Illustration type</label>
+			<trove-facet id="l-illustrationType" name="l-illustrationType"></trove-facet>
+			
+			<label for="l-language">Language</label>
+			<trove-facet id="l-language" name="l-language"></trove-facet>
+			
+			<label for="l-austlanguage">Aboriginal and Torres Strait Islander language</label>
+			<trove-facet id="l-austlanguage" name="l-austlanguage"></trove-facet>
+			
+			<label for="l-occupation">Occupation</label>
+			<trove-facet id="l-occupation" name="l-occupation"></trove-facet>
+			
+			<label for="l-partnerNuc">National Union Catalogue code of contributing institution</label>
+			<trove-facet id="l-partnerNuc" name="l-partnerNuc"></trove-facet>
+			
+			<label for="l-state">State of publication</label>
+			<trove-facet id="l-state" name="l-state"></trove-facet>
+			
+			<label for="l-title">Title</label>
+			<trove-facet id="l-title" name="l-title"></trove-facet>
+			
+			<label for="l-wordCount">Word count</label>
+			<trove-facet id="l-wordCount" name="l-wordCount"></trove-facet>
+			
+			<label for="l-zoom">Map scale</label>
+			<trove-facet id="l-zoom" name="l-zoom"></trove-facet>
+			
+			<label for="l-occupation">Occupation</label>
+			<trove-facet id="l-occupation" name="l-occupation"></trove-facet>
+			
+			<button>Submit query</button>
+		</form>
+		<script>
+			// test that the trove-facet custom element emits change events
+			//document.getElementById("geo").addEventListener("change", (event) => { console.log('geo: ', event, event.target.value) });
+		</script>
+	</body>
+</html>
