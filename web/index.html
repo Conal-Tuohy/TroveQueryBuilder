@@ -2,21 +2,19 @@
 <html lang="en">
 	<head>
 		<meta charset="UTF-8">
-		<title>Trove Query Builder demo</title>
-		<!--<link rel="stylesheet" href="TroveQueryBuilder.css" />-->
+		<title>Trove Query Builder</title>
 		<script src="TroveQuery.js"></script>
 		<script src="TroveFacet.js"></script>
 		<style>
-			@import url('https://fonts.googleapis.com/css2?family=Sofia+Sans+Condensed:wght@400;700&family=Sofia+Sans+Extra+Condensed&display=swap');
 			body, input, select, button {
-				font-family: "Sofia Sans Condensed", sans-serif;
+				font-family: sans-serif;
 			}
 			h1 {
 				text-align: center;
 			}
 			#trove-form {
 				display: grid;
-				grid-template-columns: 6em 1fr;
+				grid-template-columns: 8em 1fr;
 				gap: 0.5em;
 			}
 			#trove-form label {
@@ -62,6 +60,7 @@
 			<label for="include">Optional inclusions</label>
 			<select name="include" id="include" multiple="multiple">
 				<option value="all">all</option>
+				<option value="articleText" selected="selected"">Full text of digitised articles</option>
 				<option value="comments">Comments added by members of the public</option>
 				<option value="holdings">Institutional holdings of the items</option>
 				<option value="links">Links to online versions of the items</option>
@@ -72,7 +71,7 @@
 				<option value="workversions">All available versions of the items</option>
 			</select>
 			
-			<label for="proxy-include-people-australia">Include additional detail from People Australia</label>
+			<label for="proxy-include-people-australia">Include extra details from People Australia</label>
 			<input type="checkbox" id="proxy-include-people-australia" name="proxy-include-people-australia" value="true" />
 			
 			<label for="category">Category</label>
