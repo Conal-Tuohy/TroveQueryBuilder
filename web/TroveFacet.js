@@ -123,8 +123,9 @@ class FacetMonitor {
 					var counts = Object
 						.getOwnPropertyNames(term.categoryCounts)
 						.map((categoryName) => `${term.categoryCounts[categoryName]} ${categoryName}`)
-						.join('; ');
-					optionElement.append(term.display + '	   (' + counts + ')');
+						.join('\n');
+					optionElement.setAttribute('title', counts);
+					optionElement.append(term.display);// + '	   (' + counts + ')');
 					facetElement.select_.append(optionElement);
 				}
 			}
@@ -137,12 +138,12 @@ class FacetMonitor {
 			return count
 		}
 		if (count < 1000000) {
-			return (count / 1000).toExponential(1).split('e')[0] + "k";
-		}
+			return (count / 1000).toFixed(1).replace('.0', '') + "k";
+		} 
 		if (count < 1000000000) {
-			return (count / 1000000).toExponential(1).split('e')[0] + "M";
+			return (count / 1000000).toFixed(1).replace('.0', '') + "M";
 		}
-		return (count / 1000000000).toExponential(1).split('e')[0] + "B";
+		return (count / 1000000000).toFixed(1).replace('.0', '') + "B";
 	}
 	
 	addFacetTerm(facets, facetName, termDisplay, termSearch, category, count) {
@@ -259,9 +260,8 @@ class TroveFacet extends HTMLElement {
       this.attachShadow({mode: 'open', delegatesFocus: true});
       this.shadowRoot.innerHTML = `
       	<style>
-      		@import url('https://fonts.googleapis.com/css2?family=Sofia+Sans+Condensed:wght@400;700&family=Sofia+Sans+Extra+Condensed&display=swap');
       		button, input, select {
-      			font-family: "Sofia Sans Condensed", sans-serif;
+      			font-family: sans-serif;
       			font-weight: 300;
       			width: 100%;
 		}
