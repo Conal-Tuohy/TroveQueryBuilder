@@ -2,14 +2,14 @@
 
 const css=
 `
+	div, input, select, button {
+      		font-family: sans-serif;
 /*
-	@import url('https://fonts.googleapis.com/css2?family=Sofia+Sans+Condensed:wght@400;700&family=Sofia+Sans+Extra+Condensed&display=swap');
-	div {
-      		font-family: "Sofia Sans Condensed", sans-serif;
 		border-style: solid;
 		border-width: 1px;
 		border-color: yellow;
-	}*/
+*/
+	}
 	div.controls {
 		display: flex;
 		justify-content: flex-end;
@@ -152,7 +152,7 @@ onClick(event) {
 				var groupContent = event.target.closest('.q-group-content');
 				if (groupContent.children.length == 1) {
 					// this is the only condition in the group; reset it rather than delete it
-					groupContent.innerHTML = this.renderConditionAsHTML(newQCondition());
+					groupContent.innerHTML = this.renderConditionAsHTML(this.newQCondition());
 				} else {
 					// there are other conditions in the group; so it's safe to delete it
 					event.target
@@ -165,14 +165,14 @@ onClick(event) {
 		case "delete-group":
 			{
 				var group = event.target.closest(".q-group"); // group containing the "delete group" button
-				var parentGroup = group.parentElement.closest(".q-group"); 
+				var parentGroup = group.parentElement ? group.parentElement.closest(".q-group") : null; 
 				if (parentGroup) {
 					// the group has a parent group, so deleting it won't leave the form empty
 					group.remove();
 				} else {
 					// no parent group, so don't delete this group: just reset it by replacing its content with an empty condition
-					this.getNodeByXPath(group, "div[@class='q-group-content']") // container for the new condition
-						.innerHTML = this.renderConditionAsHTML(newQCondition());
+					this.getNodeByXPath(group, "div[@class='q-group-content-and-addition-controls']/div[@class='q-group-content']") // container for the new condition
+						.innerHTML = this.renderConditionAsHTML(this.newQCondition());
 				}
 				event.preventDefault(); // the browser should not handle this event
 				break;
