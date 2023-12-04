@@ -3,6 +3,9 @@
 	<head>
 		<meta charset="UTF-8">
 		<title>Trove Query Builder</title>
+		<link rel="apple-touch-icon" sizes="180x180" href="favicon/apple-touch-icon.png"/>
+		<link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png"/>
+		<link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png"/>
 		<script src="TroveQuery.js"></script>
 		<script src="TroveFacet.js"></script>
 		<style>
@@ -38,7 +41,10 @@
 				<option value="csv">Comma Separated Values (CSV) spreadsheet</option>
 			</select>
 			
-			<label for="n">Maximum number of results</label>
+			<label for="proxy-max-requests">Maximum API calls (per category)</label>
+			<input name="proxy-max-requests" id="proxy-max-requests" type="number" min="1" max="10000000" value="10"/>
+			
+			<label for="n">Maximum number of results (per API call)</label>
 			<input name="n" id="n" value="100" type="number" min="1" max="100">
 		
 			<label for="sortby">Sort by</label>
@@ -60,7 +66,7 @@
 			<label for="include">Optional inclusions</label>
 			<select name="include" id="include" multiple="multiple">
 				<option value="all">all</option>
-				<option value="articleText" selected="selected"">Full text of digitised articles</option>
+				<option value="articleText" selected="selected">Full text of digitised articles</option>
 				<option value="comments">Comments added by members of the public</option>
 				<option value="holdings">Institutional holdings of the items</option>
 				<option value="links">Links to online versions of the items</option>
