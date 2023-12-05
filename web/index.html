@@ -8,6 +8,7 @@
 		<link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png"/>
 		<script src="TroveQuery.js"></script>
 		<script src="TroveFacet.js"></script>
+		<script src="TroveDatasetMetadata.js"></script>
 		<style>
 			body, input, select, button {
 				font-family: sans-serif;
@@ -30,6 +31,8 @@
 		<!-- https://api.trove.nla.gov.au/v3/result -->
 		<h1>Query Trove</h1>
 		<form id="trove-form" name="trove" action="http://localhost:8080/proxy/v3/result" method="get" target="_blank">
+			<label for="metadata">Dataset description</label>
+			<trove-dataset-metadata id="metadata"></trove-dataset-metadata>		
 			<label for="key">API Key</label>
 			<input name="key" id="key" value="">
 			
@@ -175,9 +178,47 @@
 			<label for="l-occupation">Occupation</label>
 			<trove-facet id="l-occupation" name="l-occupation"></trove-facet>
 			
-			<button>Submit query</button>
+			<button id="open">Open query result in browser</button>
+			<button id="harvest">Harvest query results</button>
 		</form>
 		<script>
+			// function to request the harvester to start harvesting from a URL
+			async function harvest(urlSearchParams) {
+			  // Default options are marked with *
+			  const response = await fetch('http://localhost:8080/harvester/harvest/', {
+				method: "POST", 
+				mode: "cors", // no-cors, *cors, same-origin
+				cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+				credentials: "same-origin", // include, *same-origin, omit
+				headers: {
+				  //"Content-Type": "application/json",
+				  'Content-Type': 'application/x-www-form-urlencoded',
+				},
+				redirect: "follow", // manual, *follow, error
+				referrerPolicy: "no-referrer", // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+				body: urlSearchParams
+			  });
+			  return response.url; // the page describing the newly created harvest
+			}
+			
+			document.getElementById("harvest").addEventListener(
+				"click", 
+				(event) => {
+					// The default handling for this event would submit the form
+					// but we don't want that to happen as we are passing the query URL
+					// to the harvester instead.
+					event.preventDefault();
+					// generate the query URL
+					const form = event.target.form;
+					const formData = new FormData(form);
+					const queryURL = "http://localhost:8080/proxy/v3/result?" + new URLSearchParams(formData).toString();
+					// instruct the harvester to load the corpus from the trove-proxy container
+					var urlSearchParams = new URLSearchParams();
+					urlSearchParams.append('url', queryURL);
+					harvest(urlSearchParams) // start the harvest
+						.then((url) => {window.open(url)}); // open the harvest's web page
+				}
+			);
 			// test that the trove-facet custom element emits change events
 			//document.getElementById("geo").addEventListener("change", (event) => { console.log('geo: ', event, event.target.value) });
 		</script>
