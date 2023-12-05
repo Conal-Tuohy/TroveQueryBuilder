@@ -193,8 +193,6 @@ class FacetMonitor {
 		);
 		*/
 		// construct a request URI from the form, 
-		// TODO see if it has changed from last time
-		// the facet values were retrieved; only if it has, then issue the new facet query
 		var formData = new FormData(this.form);
 		/* modify formData so it specifies
 			TODO none of the proxy-* parameters (since query is direct to Trove API) 
@@ -206,7 +204,7 @@ class FacetMonitor {
 			JSON result format
 		*/
 		[
-			'key', 'n', 'sortby', 'bulkHarvest', 'reclevel', 'include',
+			'n', 'sortby', 'bulkHarvest', 'reclevel', 'include',
 			'proxy-format', 'proxy-include-people-australia'
 		].forEach(
 			(field) => formData.delete(field)
