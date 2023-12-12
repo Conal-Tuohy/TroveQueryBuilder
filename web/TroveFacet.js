@@ -195,28 +195,25 @@ class FacetMonitor {
 		// construct a request URI from the form, 
 		var formData = new FormData(this.form);
 		/* modify formData so it specifies
-			TODO none of the proxy-* parameters (since query is direct to Trove API) 
-				(not strictly necessary since Trove will ignore them) 
+			None of the proxy-* parameters (since query is direct to Trove API) 
 			None of the sorting, counting, etc parameters 
 			None of the trove-facet elements 
 			facet counts for all the registered facets 
-			zero search results
+			A single search results.
+			We would set this to "0", but that triggers a 500 internal server error if the API call also specifies a value for one of the facet fields
 			JSON result format
 		*/
-		[
-			'n', 'sortby', 'bulkHarvest', 'reclevel', 'include',
-			'proxy-format', 'proxy-include-people-australia'
-		].forEach(
-			(field) => formData.delete(field)
-		);
+		Array.from(formData.keys())
+			.filter((parameter) => parameter.startsWith('proxy-'))
+			.concat(['n', 'sortby', 'bulkHarvest', 'reclevel', 'include'])
+			.forEach((field) => formData.delete(field));
+			
 		this.facetElements.forEach(
 			(facet) => {
 				formData.append("facet", facet.name.substring(2)); // trim the "l-" prefix from the facet name
 				formData.delete(facet.name);
 			}
 		);
-		// we don't need any records, we just want the facet details
-		// We would set this to "0", but that triggers a 500 internal server error if the API call also specifies a value for one of the facet fields 
 		formData.set("n", "1"); 
 		formData.set("encoding", "json");
 			
