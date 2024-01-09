@@ -206,7 +206,7 @@
 					// instruct the harvester to load the corpus from the trove-proxy container
 					var urlSearchParams = new URLSearchParams();
 					urlSearchParams.append('url', queryURL);
-					harvest('http://localhost:8080/harvester/harvest/', urlSearchParams) // start the harvest
+					harvest('/harvester/harvest/', urlSearchParams) // start the harvest
 						.then((url) => {window.open(url)}); // open the harvest's web page
 				}
 			);
