@@ -165,13 +165,13 @@ onClick(event) {
 		case "delete-group":
 			{
 				var group = event.target.closest(".q-group"); // group containing the "delete group" button
-				var parentGroup = group.parentElement ? group.parentElement.closest(".q-group") : null; 
+				var parentGroup = group.parentElement.closest(".q-group"); 
 				if (parentGroup) {
 					// the group has a parent group, so deleting it won't leave the form empty
 					group.remove();
 				} else {
 					// no parent group, so don't delete this group: just reset it by replacing its content with an empty condition
-					this.getNodeByXPath(group, "div[@class='q-group-content-and-addition-controls']/div[@class='q-group-content']") // container for the new condition
+					this.getNodeByXPath(group, "div[@class='q-group-content']") // container for the new condition
 						.innerHTML = this.renderConditionAsHTML(this.newQCondition());
 				}
 				event.preventDefault(); // the browser should not handle this event
